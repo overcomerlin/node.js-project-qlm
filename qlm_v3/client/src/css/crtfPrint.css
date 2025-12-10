@@ -1,0 +1,231 @@
+.templete-print-preview {
+  position: relative;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+}
+
+.busName-print-preview {
+  position: absolute;
+  top: 11mm;
+  left: 63mm;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.busId-print-preview {
+  position: absolute;
+  top: 19.5mm;
+  left: 70mm;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.vehCode-print-preview {
+  position: absolute;
+  top: 19.5mm;
+  left: 117mm;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.modelCode-print-preview {
+  position: absolute;
+  top: 28.5mm;
+  left: 89mm;
+  font-size: 9pt;
+  font-weight: bold;
+}
+
+.vscc-print-preview {
+  position: absolute;
+  top: 37mm;
+  left: 78mm;
+  font-size: 11pt;
+  font-weight: bold;
+}
+
+.publishDate-print-preview {
+  position: absolute;
+  top: 80.6mm;
+  left: 75.5mm;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+.nextDate-print-preview {
+  position: absolute;
+  top: 85mm;
+  left: 75.5mm;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+/****************************/
+.busName-print-tune {
+  position: absolute;
+  top: 75px;
+  left: 140px;
+  color: rgb(0, 0, 252);
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.busId-print-tune {
+  position: absolute;
+  top: 130px;
+  left: 179px;
+  color: rgb(0, 0, 252);
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.vehCode-print-tune {
+  position: absolute;
+  top: 130px;
+  left: 450px;
+  color: rgb(0, 0, 252);
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.modelCode-print-tune {
+  position: absolute;
+  top: 181px;
+  left: 289px;
+  color: rgb(0, 0, 252);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.vscc-print-tune {
+  position: absolute;
+  top: 220px;
+  left: 220px;
+  color: rgb(0, 0, 252);
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.publishDate-print-tune {
+  position: absolute;
+  top: 470px;
+  left: 210px;
+  color: rgb(0, 0, 252);
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.nextDate-print-tune {
+  position: absolute;
+  top: 495px;
+  left: 210px;
+  color: rgb(0, 0, 252);
+  font-size: 23px;
+  font-weight: bold;
+}
+/****************************/
+
+.crtf-templete-mdbcontainer {
+  position: relative;
+  background-color: #f8f9fa;
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+}
+.crtf-templete svg {
+  transform: scale(1.5);
+  transform-origin: top left;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+}
+
+@media print {
+  @page {
+    size: A5 landscape;
+    margin: 1cm;
+  }
+
+  .templete-print-preview {
+    /* 定義預設值，以防萬一變數未傳入 */
+    --tune-busName-top: 0mm;
+    --tune-busName-left: 0mm;
+    --tune-busName-fontSize: 12pt;
+    --tune-busId-top: 0mm;
+    --tune-busId-left: 0mm;
+    --tune-busId-fontSize: 12pt;
+    --tune-vehCode-top: 0mm;
+    --tune-vehCode-left: 0mm;
+    --tune-vehCode-fontSize: 12pt;
+    --tune-modelCode-top: 0mm;
+    --tune-modelCode-left: 0mm;
+    --tune-modelCode-fontSize: 12pt;
+    --tune-vscc-top: 0mm;
+    --tune-vscc-left: 0mm;
+    --tune-vscc-fontSize: 12pt;
+    --tune-publishDate-top: 0mm;
+    --tune-publishDate-left: 0mm;
+    --tune-publishDate-fontSize: 12pt;
+    --tune-nextDate-top: 0mm;
+    --tune-nextDate-left: 0mm;
+    --tune-nextDate-fontSize: 12pt;
+  }
+
+  .no-print {
+    display: none;
+  }
+
+  .busName-print-preview,
+  .busId-print-preview,
+  .vehCode-print-preview,
+  .modelCode-print-preview,
+  .vscc-print-preview,
+  .publishDate-print-preview,
+  .nextDate-print-preview {
+    position: absolute;
+    font-weight: normal;
+    color: black;
+  }
+
+  .busName-print-preview {
+    top: calc(12mm + var(--tune-busName-top));
+    left: calc(25mm + var(--tune-busName-left));
+    font-size: var(--tune-busName-fontSize);
+  }
+
+  .busId-print-preview {
+    top: calc(23mm + var(--tune-busId-top));
+    left: calc(30mm + var(--tune-busId-left));
+    font-size: var(--tune-busId-fontSize);
+  }
+
+  .vehCode-print-preview {
+    top: calc(23mm + var(--tune-vehCode-top));
+    left: calc(75mm + var(--tune-vehCode-left));
+    font-size: var(--tune-vehCode-fontSize);
+  }
+
+  .modelCode-print-preview {
+    top: calc(32mm + var(--tune-modelCode-top));
+    left: calc(48mm + var(--tune-modelCode-left));
+    font-size: var(--tune-modelCode-fontSize);
+  }
+
+  .vscc-print-preview {
+    top: calc(45mm + var(--tune-vscc-top));
+    left: calc(37mm + var(--tune-vscc-left));
+    font-size: var(--tune-vscc-fontSize);
+  }
+
+  .publishDate-print-preview {
+    top: calc(88mm + var(--tune-publishDate-top));
+    left: calc(36mm + var(--tune-publishDate-left));
+    font-size: var(--tune-publishDate-fontSize);
+  }
+  .nextDate-print-preview {
+    top: calc(93mm + var(--tune-nextDate-top));
+    left: calc(36mm + var(--tune-nextDate-left));
+    font-size: var(--tune-nextDate-fontSize);
+  }
+}

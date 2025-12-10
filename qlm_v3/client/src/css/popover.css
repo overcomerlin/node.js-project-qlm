@@ -1,0 +1,58 @@
+/* Popover.css */
+
+.popover-container {
+  background: #ffffff;
+  color: rgb(78, 78, 78);
+  font-weight: bold;
+  padding: 2px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  z-index: 1000; /* 確保在最上層 */
+  box-shadow: 0 2px 8px rgba(197, 0, 0, 0.865);
+}
+
+.popover-arrow,
+.popover-arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+}
+
+.popover-arrow {
+  visibility: hidden;
+}
+
+.popover-arrow::before {
+  visibility: visible;
+  content: "";
+  transform: rotate(45deg);
+}
+
+/* --- Arrow position --- */
+
+/* 當浮動視窗在目標上方 (placement: top) */
+.popover-container[data-popper-placement^="top"] > .popover-arrow {
+  bottom: -4px;
+}
+
+/* 當浮動視窗在目標下方 (placement: bottom) */
+.popover-container[data-popper-placement^="bottom"] > .popover-arrow {
+  top: -4px;
+}
+
+/* 當浮動視窗在目標左方 (placement: left) */
+.popover-container[data-popper-placement^="left"] > .popover-arrow {
+  right: -4px;
+}
+
+/* 當浮動視窗在目標右方 (placement: right) */
+.popover-container[data-popper-placement^="right"] > .popover-arrow {
+  left: -4px;
+}
+
+.submit-btn {
+  position: absolute;
+  bottom: 80px;
+  left: 60px;
+}

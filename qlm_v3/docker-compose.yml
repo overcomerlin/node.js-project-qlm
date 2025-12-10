@@ -1,0 +1,91 @@
+services:
+  client_web:
+    build: ./client
+    container_name: qlm-client-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - qlm_network
+
+  server:
+    build: ./server
+    container_name: qlm-server
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    expose:
+      - "3000"
+    networks:
+      - qlm_network
+      - redis_network
+      - db_network
+
+  redis:
+    image: redis:8
+    container_name: qlm-redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command:
+      [
+        "redis-server",
+        "/etc/redis/redis.conf",
+        "--requirepass",
+        "${REDIS_PASSWORD}",
+      ]
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/etc/redis/redis.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD} PING | grep -q PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - redis_network
+
+  database:
+    image: mysql:8.0
+    container_name: qlm-database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    restart: always
+    stop_grace_period: 60s
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+      - ./db/charset.cnf:/etc/mysql/conf.d/charset.cnf:ro
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'mysqladmin ping -h localhost --protocol=TCP -uroot -p"${MYSQL_ROOT_PASSWORD}" --silent',
+        ]
+      interval: 10s
+      timeout: 8s
+      retries: 5
+      start_period: 40s
+    networks:
+      - db_network
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  qlm_network:
+  redis_network:
+  db_network:

@@ -1,0 +1,17 @@
+[mysqld]
+# 伺服器預設
+character-set-server = utf8mb4
+collation-server     = utf8mb4_unicode_ci
+
+# 非必須，但常見最佳化（視版本/需求）
+# skip-character-set-client-handshake = 1
+# ↑ 若啟用，伺服器會忽略客戶端提出的字元集，搭配 init_connect 可更「強制」。
+#   但某些工具可能不預期，建議先用預設（不啟用）即可。
+
+[client]
+# 讓容器內 mysql CLI 預設就是 utf8mb4
+default-character-set = utf8mb4
+
+[mysql]
+# 讓 mysql CLI 的互動模式也用 utf8mb4
+default-character-set = utf8mb4

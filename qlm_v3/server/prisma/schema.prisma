@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum CrtfCategory{
+  ISSUE
+  RENEW
+  REPLACE
+}
+
+model Company {
+  id            Int      @id @default(autoincrement())
+  companyCode   String   @unique
+  companyName   String
+  taxId         String?
+  phone         String?
+  address       String?
+  remark        Json?  // {} denotes empty field
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  deletedById   Int?
+  deletedBy     User?   @relation("CompanyDeletedBy", fields: [deletedById], references: [id], onDelete: SetNull)
+  
+  employees  User[] @relation("CompanyEmployees")
+  ownedCrtfs CrtfData[] @relation("CrtfCompanys")
+
+  @@index([deletedAt])
+  @@index([deletedAt,companyCode])
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  userRole      UserRole  @default(USER)
+  username      String    @unique
+  password      String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  
+  companyId     Int
+  company       Company  @relation("CompanyEmployees", fields: [companyId], references: [id], onDelete: Restrict)
+
+  userInfo      UserInfo?
+
+  deletedById   Int?
+  deletedBy     User?   @relation("UserDeleteBy", fields: [deletedById], references: [id], onDelete: SetNull)
+  deletedUsers  User[]  @relation("UserDeleteBy")
+  
+  companiesDeleted Company[]  @relation("CompanyDeletedBy")
+  crtfCreated      CrtfData[] @relation("CrtfCreatedBy")
+  crtfDeleted      CrtfData[] @relation("CrtfDeletedBy")
+  
+
+  @@index([deletedAt])
+  @@index([companyId,deletedAt])
+}
+
+model UserInfo{
+  id            Int      @id @default(autoincrement())
+  functionality Json  // open/close fields or functions to users
+  printTune     Json  // tweak the print position accurancy
+  remark        Json?  // {} denotes empty field
+  userId        Int @unique
+  user          User  @relation(fields: [userId], references: [id]) 
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model CrtfData{
+  id        Int      @id @default(autoincrement())
+  crtfNo    String  @unique // "BUS_SN"_"BUS_ID"_"UUID" composition
+  crtfField Json // all fields of crtf
+  category  CrtfCategory  @default(ISSUE)
+  
+  companyId Int
+  company   Company @relation("CrtfCompanys", fields: [companyId], references: [id])
+
+  createdById Int
+  createdBy   User @relation("CrtfCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  deletedAt     DateTime?
+  deletedById   Int?
+  deletedBy     User? @relation("CrtfDeletedBy", fields: [deletedById], references: [id], onDelete: SetNull)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  remark  Json?
+
+  @@index([createdById,deletedAt])
+  @@index([companyId,deletedAt])
+}
