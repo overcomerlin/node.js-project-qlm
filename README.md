@@ -33,3 +33,11 @@ QLM is a full-stack web application featuring a modern, responsive frontend buil
     `docker compose down`
   - **Perform a full cleanup (including data volumes and images):**
     `docker compose down -v --rmi all`
+
+## 👨‍💻 Author
+
+**Jacob Lin**
+_Algorithm Engineer & Full-Stack Developer_
+[LinkedIn](https://www.linkedin.com/in/dachunglin) | [Email](mailto:overcomerlin@gmail.com)
+
+_"A ranger soaring through the world of algorithms."_
